@@ -2,7 +2,6 @@ import java.io.*;
 import java.text.*;
 import java.util.*;
 import java.net.*;
-
 class ClientHandler extends Thread
 {
     DateFormat fordate = new SimpleDateFormat("yyyy/MM/dd");
@@ -28,7 +27,6 @@ class ClientHandler extends Thread
         while (true)
         {
             try {
-
                 // Ask user what he wants
                 dos.writeUTF("What do you want?[Date | Time]..\n"+
                         "Type Exit to terminate connection.");
