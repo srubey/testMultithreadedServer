@@ -3,12 +3,11 @@ import java.net.*;
 import java.util.Scanner;
 
 public class Client {
-    protected static Scanner scanner = new Scanner(System.in);
     protected static Socket clientSocket = null;
+    protected static Scanner scanner = new Scanner(System.in);
     protected static String username = null;
     protected static DataInputStream inputStream = null;
     protected static DataOutputStream outputStream = null;
-
 
     public static void main(String[] args) throws IOException {
         try {
@@ -23,19 +22,17 @@ public class Client {
             else
                 System.out.println("Error connecting to server");
 
-            //Socket clientSocket = new Socket("127.0.0.1", 6789);
-
             // obtaining input and out streams
-            DataInputStream dis = new DataInputStream(clientSocket.getInputStream());
-            DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
+            inputStream = new DataInputStream(clientSocket.getInputStream());
+            outputStream = new DataOutputStream(clientSocket.getOutputStream());
 
             // the following loop performs the exchange of
             // information between client and client handler
             while (true)
             {
-                System.out.println(dis.readUTF());
+                System.out.println(inputStream.readUTF());
                 String tosend = scanner.nextLine();
-                dos.writeUTF(tosend);
+                outputStream.writeUTF(tosend);
 
                 // If client sends exit,close this connection
                 // and then break from the while loop
@@ -48,14 +45,14 @@ public class Client {
                 }
 
                 // printing date or time as requested by client
-                String received = dis.readUTF();
+                String received = inputStream.readUTF();
                 System.out.println(received);
             }
 
             // closing resources
             scanner.close();
-            dis.close();
-            dos.close();
+            inputStream.close();
+            outputStream.close();
         }catch(Exception e){
             e.printStackTrace();
         }
