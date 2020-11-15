@@ -111,7 +111,7 @@ public class Client {
             else
                 System.out.println("Error disconnecting from server");
         }catch(Exception e){
-            e.printStackTrace();
+            System.out.println("Server has crashed. Please try again later.");
         }
     }
 
@@ -123,7 +123,7 @@ public class Client {
             clientSocket = new Socket(address, port);
             success = true;
         } catch (IOException i) {
-            System.out.println(i);
+            System.out.println("Error connecting to server");
         }
 
         return success;
