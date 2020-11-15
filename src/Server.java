@@ -5,12 +5,17 @@ public class Server {
     protected static RoomList rooms;
     protected static UserList users;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         rooms = new RoomList();
         users = new UserList();
         int port = 6789;
 
-        ServerSocket svrSocket = new ServerSocket(port);
+        ServerSocket svrSocket = null;
+        try {
+            svrSocket = new ServerSocket(port);
+        } catch (IOException e) {
+            //e.printStackTrace();
+        }
 
         System.out.println("Server process initiated");
         System.out.println("Listening on port " + port + "\n");
@@ -36,7 +41,11 @@ public class Server {
                 thread.start();
             }
             catch (Exception e){
-                connectionSocket.close();
+                try {
+                    connectionSocket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 e.printStackTrace();
             }
         }

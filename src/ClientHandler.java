@@ -15,12 +15,13 @@ public class ClientHandler extends Thread {
 
     public void run(){
         boolean dsct = false;
+        boolean crashed = false;
         String message;
         String code = "";
 
 
         //TODO: structured programming
-        while(true){
+        while(true && !crashed){
             try {
                 message = inStream.readUTF();
                 Command command = parseCommand(message);
@@ -42,9 +43,13 @@ public class ClientHandler extends Thread {
 
                 //TODO: deal with socket exception messages
             } catch (IOException i) {
-                System.out.println(i);
+                crashed = true;
             }
         }
+
+        if(crashed)
+            System.out.println("Client " + this.socket + " crashed\n");
+
         //close the input and output streams
         try {
             inStream.close();
