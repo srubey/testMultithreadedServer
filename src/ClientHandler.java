@@ -32,7 +32,7 @@ class ClientHandler extends Thread
 
                 if(received.equals("Exit"))
                 {
-                    System.out.println("Client " + this.s + " sends exit...");
+                    System.out.println("\nClient " + this.s + " sends exit...");
                     System.out.println("Closing this connection.");
                     this.s.close();
                     System.out.println("Connection closed");

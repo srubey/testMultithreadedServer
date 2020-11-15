@@ -9,7 +9,7 @@ public class Client {
     protected static DataInputStream inputStream = null;
     protected static DataOutputStream outputStream = null;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         try {
             System.out.print("Please enter your username: ");
             username = scanner.next();
@@ -105,7 +105,7 @@ public class Client {
             //disconnect from server
             boolean disconnected = disconnect();
             if(disconnected)
-                System.out.println("Disconnected from server");
+                System.out.println("Disconnected from server\n");
             else
                 System.out.println("Error disconnecting from server");
         }catch(Exception e){

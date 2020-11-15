@@ -1,41 +1,45 @@
 import java.io.*;
 import java.net.*;
 
-public class Server
-{
-    public static void main(String[] args) throws IOException
-    {
-        // server is listening on port 5056
-        ServerSocket ss = new ServerSocket(6789);
+public class Server {
+    protected static RoomList rooms;
+    protected static UserList users;
 
-        // running infinite loop for getting
-        // client request
-        while (true)
-        {
-            Socket s = null;
+    protected Server(){
+        rooms = new RoomList();
+        users = new UserList();
+    }
+
+    public static void main(String[] args) throws IOException {
+        int port = 6789;
+
+        ServerSocket svrSocket = new ServerSocket(port);
+
+        System.out.println("Server process initiated");
+        System.out.println("Listening on port " + port + "\n");
+
+        //start server, run persistently
+        while (true) {
+            Socket connectionSocket = null;
 
             try
             {
                 // socket object to receive incoming client requests
-                s = ss.accept();
-
-                System.out.println("A new client is connected : " + s);
+                connectionSocket = svrSocket.accept();
+                System.out.println("Connected to new client " + connectionSocket);
 
                 // obtaining input and out streams
-                DataInputStream dis = new DataInputStream(s.getInputStream());
-                DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+                DataInputStream inStream = new DataInputStream(connectionSocket.getInputStream());
+                DataOutputStream outStream = new DataOutputStream(connectionSocket.getOutputStream());
 
-                System.out.println("Assigning new thread for this client");
+                System.out.println("Assigning thread to client " + connectionSocket);
 
                 // create a new thread object
-                Thread t = new ClientHandler(s, dis, dos);
-
-                // Invoking the start() method
-                t.start();
-
+                Thread thread = new ClientHandler(connectionSocket, inStream, outStream);
+                thread.start();
             }
             catch (Exception e){
-                s.close();
+                connectionSocket.close();
                 e.printStackTrace();
             }
         }
