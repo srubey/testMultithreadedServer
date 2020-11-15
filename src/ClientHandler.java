@@ -41,7 +41,6 @@ public class ClientHandler extends Thread {
                     outStream.writeUTF(retMsg);
                 }
 
-                //TODO: deal with socket exception messages
             } catch (IOException i) {
                 crashed = true;
             }
