@@ -163,6 +163,9 @@ public class Client {
             case "OK_POST":
                 toPrint = "\nMessage posted\n";
                 break;
+            case "ERR_ALREADYJOINED":
+                toPrint = "\nYou are already a member of that room.\n";
+                break;
             case "ERR_DUPLICATEROOM":
                 toPrint = "\nA room by that name already exists.  Please choose a different name.\n";
                 break;

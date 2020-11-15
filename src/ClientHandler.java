@@ -28,7 +28,6 @@ public class ClientHandler extends Thread {
 
                 //if command code is "DSCT", close the socket
                 if (code.equals("DSCT")){
-                    //TODO: when a user leaves, remove them from all chatrooms
                     rmvUsrAllRooms(command.getUser());
                     System.out.println("\nClosing connection " + this.socket);
                     this.socket.close();
@@ -193,12 +192,20 @@ public class ClientHandler extends Thread {
         String roomName = command.getRoom();
 
         //verify room is on list; add user to room if found
-        //Room room = findRoom(roomName);
         Room room = rooms.findRoom(roomName);
+
+        //if room exists
         if(room != null){
-            room.addUser(user);
-            retMsg = "OK_JOIN";
+            //...and user is not in the room, add user to room
+            if(!room.getUsers().contains(user)) {
+                room.addUser(user);
+                retMsg = "OK_JOIN";
+            }
+            //...if user is already in the room, send message stating so
+            else
+                retMsg = "ERR_ALREADYJOINED";
         }
+        //if room does not exist
         else
             retMsg = "ERR_NONEXISTENTROOM";
 
