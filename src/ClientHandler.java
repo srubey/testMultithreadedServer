@@ -81,10 +81,20 @@ public class ClientHandler extends Thread {
         }
 
         //create User to associate with new Command
-        User user = new User(name);
-
-        //TODO: only user if not already present?
-        Server.users.addUser(user);
+        //if user already present, associate with that user.  If not, create new one.
+        User user = null;
+        boolean found = false;
+        UserList users = Server.users;
+        for(User u : users.getUsers()){
+            if(!found && name.equals(u.getName())) {
+                user = u;
+                found = true;
+            }
+        }
+        if(!found) {
+            user = new User(name);
+            Server.users.addUser(user);
+        }
 
         //create new command object
         Command command = new Command(user, code, roomName, message);
