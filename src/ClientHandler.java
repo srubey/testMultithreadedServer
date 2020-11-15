@@ -14,14 +14,13 @@ public class ClientHandler extends Thread {
     }
 
     public void run(){
-        boolean dsct = false;
+        boolean dsct = false;  //represents client's wish to disconnect
         boolean crashed = false;
         String message;
         String code = "";
 
 
-        //TODO: structured programming
-        while(true && !crashed){
+        while(!dsct && !crashed){
             try {
                 message = inStream.readUTF();
                 Command command = parseCommand(message);
@@ -33,7 +32,6 @@ public class ClientHandler extends Thread {
                     System.out.println("\nClosing connection " + this.socket);
                     this.socket.close();
                     dsct = true;
-                    break;
                 }
                 //otherwise, perform command
                 else{
