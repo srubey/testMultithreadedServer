@@ -5,12 +5,9 @@ public class Server {
     protected static RoomList rooms;
     protected static UserList users;
 
-    protected Server(){
+    public static void main(String[] args) throws IOException {
         rooms = new RoomList();
         users = new UserList();
-    }
-
-    public static void main(String[] args) throws IOException {
         int port = 6789;
 
         ServerSocket svrSocket = new ServerSocket(port);

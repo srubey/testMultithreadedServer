@@ -85,8 +85,7 @@ public class Client {
                 }
                 //if user opts to disconnect from server
                 else if (8 == choice){
-//                    command = username + " DISC";
-                    command = "Exit";
+                    command = username + " DISC";
                     disc = true;
                 }
 
