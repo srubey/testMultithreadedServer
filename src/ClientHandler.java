@@ -28,6 +28,7 @@ public class ClientHandler extends Thread {
 
                 //if command code is "DSCT", close the socket
                 if (code.equals("DSCT")){
+                    //TODO: when a user leaves, remove them from all chatrooms
                     System.out.println("\nClosing connection " + this.socket);
                     this.socket.close();
                     dsct = true;
@@ -298,7 +299,7 @@ public class ClientHandler extends Thread {
 
                 //...if user is a member of the room and there are messages, return them
             else if(userInRoom && room.getMessages().size() > 0){
-                ArrayList<Message> messages = new ArrayList();
+                ArrayList<Message> messages = room.getMessages();
 
                 //heading
                 retMsg += "\nMessages posted to " + roomName + ":\n\n";

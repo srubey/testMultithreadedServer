@@ -46,6 +46,8 @@ public class Client {
                 }
                 //if user opts to create a new room
                 else if (3 == choice) {
+                   //TODO: only catches one word
+
                     System.out.print("Please enter the name of the room you would like to create: ");
                     String newRoomName = scanner.next();
 
@@ -60,6 +62,7 @@ public class Client {
                 }
                 //if user opts to post a msgText to a chat room
                 else if (5 == choice){
+                    //TODO: skips ahead to "please enter your message"
                     System.out.print("Please enter the name of the room you would like to post to: ");
                     String roomName = scanner.next();
                     scanner.nextLine();

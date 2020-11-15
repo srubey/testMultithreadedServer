@@ -42,6 +42,8 @@ public class Room {
         while(!found && i < users.size()){
             if(u.getName().equals(users.get(i).getName()))
                 found = true;
+
+            ++i;
         }
 
         return found;
