@@ -247,7 +247,7 @@ public class ClientHandler extends Thread {
     }
 
     //post msgText to chat room
-    protected String postToRoom(Command command){
+    protected String postToRoom(Command command) {
         RoomList rooms = Server.rooms;
         String retMsg = "";
         User user = command.getUser();
@@ -265,10 +265,6 @@ public class ClientHandler extends Thread {
                 Message message = new Message(command.getUser().getName(), command.getMessage());
                 room.addMessage(message);
                 retMsg = "OK_POST";
-
-                //TODO: send msgText to every user
-                //send new post to all users in that room
-                sendToMembers(message);
             }
             //if user is not in room, do not create msgText object, return error
             else
@@ -317,10 +313,5 @@ public class ClientHandler extends Thread {
             retMsg = "ERR_NONEXISTENTROOM";
 
         return retMsg;
-    }
-
-    //send new message post to all users in room
-    protected String sendToMembers(Message message){
-        return "";
     }
 }

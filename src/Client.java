@@ -46,9 +46,7 @@ public class Client {
                 }
                 //if user opts to create a new room
                 else if (3 == choice) {
-                   //TODO: only catches one word
-
-                    System.out.print("Please enter the name of the room you would like to create: ");
+                    System.out.print("Please enter the name of the room you would like to create (no spaces allowed): ");
                     String newRoomName = scanner.next();
 
                     command = username + " CTRM " + newRoomName;
@@ -98,6 +96,10 @@ public class Client {
                 if(!disc) {
                     String retMsg = inputStream.readUTF();
                     System.out.println(msgHandler(retMsg));
+
+                    String newPost = inputStream.readUTF();
+                    if(newPost != null)
+                        System.out.println(newPost);
 
                     choice = Menu.topMenu();
                 }
