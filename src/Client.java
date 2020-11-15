@@ -26,10 +26,11 @@ public class Client {
             inputStream = new DataInputStream(clientSocket.getInputStream());
             outputStream = new DataOutputStream(clientSocket.getOutputStream());
 
+            boolean disc = false;  //user does not presently wish to disconnect
             int choice = Menu.topMenu();
 
-            //TODO: structured programming
-            while (true){
+            //while user wishes to stay connected
+            while (!disc){
                 String command = null;
 
                 //if user opts to list existing rooms
@@ -80,35 +81,33 @@ public class Client {
                     System.out.print("Please enter the name of the room you would like to leave: ");
                     String roomName = scanner.next();
 
-                    //command = username + " LEAV " + roomName;
-                    command = roomName;
+                    command = username + " LEAV " + roomName;
                 }
                 //if user opts to disconnect from server
                 else if (8 == choice){
+//                    command = username + " DISC";
                     command = "Exit";
+                    disc = true;
                 }
 
+                //send command to server
                 outputStream.writeUTF(command);
 
-                if(command.equals("Exit"))
-                {
-                    System.out.println("Closing this connection : " + clientSocket);
-                    clientSocket.close();
-                    System.out.println("Connection closed");
-                    break;
+                //if the user hasn't disconnected, read the return message
+                if(!disc) {
+                    String retMsg = inputStream.readUTF();
+                    System.out.println(msgHandler(retMsg));
+
+                    choice = Menu.topMenu();
                 }
-
-                // printing date or time as requested by client
-                String received = inputStream.readUTF();
-                System.out.println(received);
-
-                choice = Menu.topMenu();
             }
 
-            // closing resources
-            scanner.close();
-            inputStream.close();
-            outputStream.close();
+            //disconnect from server
+            boolean disconnected = disconnect();
+            if(disconnected)
+                System.out.println("Disconnected from server");
+            else
+                System.out.println("Error disconnecting from server");
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -126,5 +125,70 @@ public class Client {
         }
 
         return success;
+    }
+
+    //disconnect from the server
+    protected static boolean disconnect(){
+        boolean success = false;
+
+        try {
+            clientSocket.close();
+            inputStream.close();
+            outputStream.close();
+            scanner.close();
+            success = true;
+        }
+        catch(IOException i) {
+            System.out.println(i);
+        }
+
+        return success;
+    }
+
+    //handle messages returned from server
+    protected static String msgHandler(String retMsg){
+        String toPrint;
+
+        //return user-friendly msgText derived from server response.
+        //if server returns info other than OK or ERR msgs, just return that info (i.e. lists, chat messages, etc)
+        switch(retMsg){
+            case "OK_CTRM":
+                toPrint = "\nRoom Created\n";
+                break;
+            case "OK_JOIN":
+                toPrint = "\nRoom joined\n";
+                break;
+            case "OK_LEAV":
+                toPrint = "\nRoom left\n";
+                break;
+            case "OK_POST":
+                toPrint = "\nMessage posted\n";
+                break;
+            case "ERR_DUPLICATEROOM":
+                toPrint = "\nA room by that name already exists.  Please choose a different name.\n";
+                break;
+            case "ERR_NOROOMS":
+                toPrint = "\nThere are currently no rooms available to list\n";
+                break;
+            case "ERR_NONEXISTENTROOM":
+                toPrint = "\nRoom does not exist\n";
+                break;
+            case "ERR_NOTINROOM":
+                toPrint = "\nYou are not currently in that room\n";
+                break;
+            case "ERR_ROOMEMPTY":
+                toPrint = "\nRoom is empty\n";
+                break;
+            case "ERR_ILLEGALCOMMAND":
+                toPrint = "\nClient error: illegal command.  Please contact the developer.\n";
+                break;
+            case "ERR_NOMESSAGES":
+                toPrint = "\nNo messages have been posted to this room\n";
+                break;
+            default:
+                toPrint = "\n" + retMsg;
+        }
+
+        return toPrint;
     }
 }
