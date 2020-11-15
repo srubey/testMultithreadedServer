@@ -97,10 +97,6 @@ public class Client {
                     String retMsg = inputStream.readUTF();
                     System.out.println(msgHandler(retMsg));
 
-                    String newPost = inputStream.readUTF();
-                    if(newPost != null)
-                        System.out.println(newPost);
-
                     choice = Menu.topMenu();
                 }
             }

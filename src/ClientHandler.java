@@ -29,6 +29,7 @@ public class ClientHandler extends Thread {
                 //if command code is "DSCT", close the socket
                 if (code.equals("DSCT")){
                     //TODO: when a user leaves, remove them from all chatrooms
+                    rmvUsrAllRooms(command.getUser());
                     System.out.println("\nClosing connection " + this.socket);
                     this.socket.close();
                     dsct = true;
@@ -44,8 +45,9 @@ public class ClientHandler extends Thread {
             }
         }
 
+        //print readable error if client unexpectedly disconnects
         if(crashed)
-            System.out.println("Client " + this.socket + " crashed\n");
+            System.out.println("Client " + this.socket + " disconnected\n");
 
         //close the input and output streams
         try {
@@ -313,5 +315,16 @@ public class ClientHandler extends Thread {
             retMsg = "ERR_NONEXISTENTROOM";
 
         return retMsg;
+    }
+
+    protected void rmvUsrAllRooms(User user){
+        RoomList rooms = Server.rooms;
+
+        //search all rooms for user.  If user in room, remove.
+        for(int i = 0; i < rooms.getRooms().size(); ++i){
+            if(rooms.getRooms().get(i).getUsers().contains(user)){
+               rooms.getRooms().get(i).removeUser(user);
+            }
+        }
     }
 }
