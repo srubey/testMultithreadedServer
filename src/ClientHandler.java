@@ -27,10 +27,6 @@ class ClientHandler extends Thread
         while (true)
         {
             try {
-                // Ask user what he wants
-                dos.writeUTF("What do you want?[Date | Time]..\n"+
-                        "Type Exit to terminate connection.");
-
                 // receive the answer from client
                 received = dis.readUTF();
 
